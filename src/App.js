@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react';
+import AppRouter from './routers/AppRouter';
+import {connect} from 'react-redux';
+import {restoreSession} from './store/auth/authActions';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  componentDidMount() {
+    if (!this.props.auth._id) {
+      // this.props.restoreSession();
+    }
+  }
+  render() {
+    return (<AppRouter/>);
+  }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+const mapDispatchToProps = dispatch => ({
+  restoreSession: (email, password) => dispatch(restoreSession())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
